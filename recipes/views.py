@@ -8,5 +8,9 @@ def home(request):
         'name':'Abioluz Robson'
     })
 
+def recipe(request, id):
+    return render(request,'recipes/pages/home.html',{
+        'name':'Abioluz Robson'
+    })
 
 #
