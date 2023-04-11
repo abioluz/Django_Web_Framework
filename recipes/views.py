@@ -9,7 +9,7 @@ def home(request):
     })
 
 def recipe(request, id):
-    return render(request,'recipes/pages/home.html',{
+    return render(request,'recipes/pages/recipe-view.html',{
         'name':'Abioluz Robson'
     })
 
