@@ -1,6 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_list_or_404, get_object_or_404
 from . import models
-from django.http import Http404
+
 
 
 # Create your views here.
@@ -12,15 +12,21 @@ def home(request):
     })
 
 def category(request, category_id):
-    recipes = models.Recipe.objects.filter(
+    # recipes = models.Recipe.objects.filter(
+    #     is_published=True, 
+    #     category__id=category_id).order_by('-id')
+    # if not recipes:
+    #     raise Http404 ('Not Found - Pena que não existe')
+
+    recipes = get_list_or_404(
+        models.Recipe.objects.filter(
         is_published=True, 
         category__id=category_id).order_by('-id')
-    if not recipes:
-        raise Http404 ('Not Found - Pena que não existe')
+    )
 
     return render(request,'recipes/pages/category.html',{
         'recipes' : recipes,
-        'title': f'{recipes.first().category.name}  - Category |'
+        'title': f'{recipes[0].category.name}  - Category |'
     })
 
 def recipe(request, id):
