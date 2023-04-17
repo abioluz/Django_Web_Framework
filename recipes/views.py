@@ -4,16 +4,18 @@ from . import models
 
 # Create your views here.
 def home(request):
-    recipes = models.Recipe.objects.all().order_by('-id')
+    recipes = models.Recipe.objects.filter(is_published=True).order_by('-id')
 
     return render(request,'recipes/pages/home.html',{
         'recipes' : recipes
     })
 
-def categoy(request, category_id):
-    recipes = models.Recipe.objects.filter(category__id=category_id).order_by('-id')
+def category(request, category_id):
+    recipes = models.Recipe.objects.filter(
+        is_published=True, 
+        category__id=category_id).order_by('-id')
 
-    return render(request,'recipes/pages/home.html',{
+    return render(request,'recipes/pages/category.html',{
         'recipes' : recipes
     })
 
