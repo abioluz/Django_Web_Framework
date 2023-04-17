@@ -30,7 +30,9 @@ def category(request, category_id):
     })
 
 def recipe(request, id):
-    recipes = models.Recipe.objects.get(id=id)
+    # recipes = models.Recipe.objects.get(is_published=True,id=id)
+
+    recipes = get_object_or_404(models.Recipe, is_published=True,id=id)
     return render(request,'recipes/pages/recipe-view.html',{
         'recipe': recipes,
         'is_detail_page': True,
