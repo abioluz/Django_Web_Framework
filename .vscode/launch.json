@@ -7,12 +7,15 @@
     
         
         {
-            "name": "Python: Arquivo Atual",
+            "name": "Python: Django",
             "type": "python",
             "request": "launch",
-            "program": "${file}",
+            "program": "${workspaceFolder}/manage.py",
+            "args": [
+                "runserver"
+            ],
             "console": "integratedTerminal",
-            "justMyCode": true
+            "django": true
         }
     ]
 }
