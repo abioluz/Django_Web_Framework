@@ -57,6 +57,15 @@
       "django-html": "html", // batisteo.vscode-django
       "javascript": "javascriptreact",
       "typescript": "typescriptreact"
-    }
+    },
+    "files.autoSave": "afterDelay",
+    "git.suggestSmartCommit": false,
+    "explorer.compactFolders": false,
+    "editor.wordWrapColumn": 79,
+    "editor.wordWrap": "wordWrapColumn",
+    "editor.linkedEditing": true,
+    "editor.occurrencesHighlight": false,
+    "editor.rulers": [
+      79,
+    ]
   }
-  
