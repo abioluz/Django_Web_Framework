@@ -9,7 +9,7 @@ def home(request):
     # recipes = get_list_or_404(
     #     models.Recipe.objects.filter(
     #     is_published=True).order_by('-id'))
- 
+
     return render(request, 'recipes/pages/home.html', {
         'recipes': recipes
     })
