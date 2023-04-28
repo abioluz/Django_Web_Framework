@@ -32,19 +32,20 @@ class RecipeViewsTest(TestCase):
     def test_recipe_home_template_loads_recipes(self):
         '''Para este teste é necessário criar receitas para o teste
            use o shift+end para selecionar até no fim da linha '''
+
         category = Category.objects.create(name='Category')
+
         author = User.objects.create_user(
             first_name='user',
             last_name='name',
             username='username',
             password='123456',
-            email='username@email.com',
-        )
+            email='username@email.com')
 
-        recipe = Recipe.objects.create(
+        recipe = Recipe.objects.create( # noqa: F841,E261
             category=category,
             author=author,
-            title='Recipe Description',
+            title='Recipe Title',
             description='Recipe Description',
             slug='recipe-slug',
             preparation_time=10,
@@ -53,11 +54,19 @@ class RecipeViewsTest(TestCase):
             servings_unit='Porções',
             preparation_steps='Recipe Preparation Steps',
             preparation_steps_is_html=False,
-            is_published=False,
-        )
-        assert 1 == 1
+            is_published=True)
 
-        
+        response = self.client.get(reverse('recipes:home'))
+        response_recipes = response.context['recipes']
+
+        content = response.content.decode('utf-8')
+
+        self.assertEqual(len(response_recipes), 1)
+        self.assertEqual(response_recipes.first().title, 'Recipe Title')
+        self.assertIn('Recipe Title', content)
+        self.assertIn('10 Minutos', content)
+        self.assertIn('5 Porções', content)
+
     def test_recipe_category_views_function_is_correct(self):
         view = resolve(reverse('recipes:category', kwargs={'category_id':
                                                            1000}))
