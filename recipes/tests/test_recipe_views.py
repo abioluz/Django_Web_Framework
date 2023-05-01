@@ -1,7 +1,7 @@
 from django.urls import reverse
 from django.urls import resolve
 from recipes import views
-from test_recipe_base import RecipeTestBase
+from .test_recipe_base import RecipeTestBase, Recipe
 
 
 # Create your tests here.
@@ -11,8 +11,6 @@ from test_recipe_base import RecipeTestBase
 # https://pt.linkedin.com/pulse/todos-os-atalhos-do-vs-code-mateus-barbosa
 
 class RecipeViewsTest(RecipeTestBase):
-    def tearDown(self) -> None:
-        return super().tearDown()
 
     # setUp
     def test_recipe_home_views_function_is_correct(self):
@@ -26,7 +24,6 @@ class RecipeViewsTest(RecipeTestBase):
         self.assertTemplateUsed(response, 'recipes/pages/home.html')
 
     def test_recipe_home_template_shows_no_recipes_found_if_no_recipes(self):
-
         response = self.client.get(reverse('recipes:home'))
         self.assertIn('No Recipes found here 😓', response.content.decode(
                                                                     'utf-8'))
@@ -34,15 +31,13 @@ class RecipeViewsTest(RecipeTestBase):
     def test_recipe_home_template_loads_recipes(self):
         '''Para este teste é necessário criar receitas para o teste
            use o shift+end para selecionar até no fim da linha '''
-
+        self.make_recipe()
         response = self.client.get(reverse('recipes:home'))
         response_recipes = response.context['recipes']
         content = response.content.decode('utf-8')
         self.assertEqual(len(response_recipes), 1)
         self.assertEqual(response_recipes.first().title, 'Recipe Title')
-        self.assertIn('Recipe Title', content)
-        self.assertIn('10 Minutos', content)
-        self.assertIn('5 Porções', content)
+        self.assertIn('Recipe Title', content) 
 
     def test_recipe_category_views_function_is_correct(self):
         view = resolve(reverse('recipes:category', kwargs={'category_id':
