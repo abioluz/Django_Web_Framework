@@ -1,8 +1,8 @@
 from django.urls import reverse
 from django.urls import resolve
 from recipes import views
-from .test_recipe_base import RecipeTestBase, Recipe
-
+from .test_recipe_base import RecipeTestBase
+# from unittest import skip
 
 # Create your tests here.
 # pip install pytest pytest-django
@@ -10,6 +10,7 @@ from .test_recipe_base import RecipeTestBase, Recipe
 # ptw para ficar gerando o teste de forma automática
 # https://pt.linkedin.com/pulse/todos-os-atalhos-do-vs-code-mateus-barbosa
 
+# @skip('WIP')
 class RecipeViewsTest(RecipeTestBase):
 
     # setUp
@@ -23,10 +24,12 @@ class RecipeViewsTest(RecipeTestBase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'recipes/pages/home.html')
 
+    # @skip('WIP')
     def test_recipe_home_template_shows_no_recipes_found_if_no_recipes(self):
         response = self.client.get(reverse('recipes:home'))
         self.assertIn('No Recipes found here 😓', response.content.decode(
                                                                     'utf-8'))
+        # self.fail('Para lembrar de digitar')
 
     def test_recipe_home_template_loads_recipes(self):
         '''Para este teste é necessário criar receitas para o teste
