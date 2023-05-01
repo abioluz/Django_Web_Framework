@@ -1,9 +1,7 @@
-from django.test import TestCase
 from django.urls import reverse
 from django.urls import resolve
 from recipes import views
-from recipes.models import Category, Recipe
-from django.contrib.auth.models import User
+from test_recipe_base import RecipeTestBase
 
 
 # Create your tests here.
@@ -12,8 +10,11 @@ from django.contrib.auth.models import User
 # ptw para ficar gerando o teste de forma automática
 # https://pt.linkedin.com/pulse/todos-os-atalhos-do-vs-code-mateus-barbosa
 
-class RecipeViewsTest(TestCase):
+class RecipeViewsTest(RecipeTestBase):
+    def tearDown(self) -> None:
+        return super().tearDown()
 
+    # setUp
     def test_recipe_home_views_function_is_correct(self):
         # view = resolve('/')
         view = resolve(reverse('recipes:home'))
@@ -25,42 +26,18 @@ class RecipeViewsTest(TestCase):
         self.assertTemplateUsed(response, 'recipes/pages/home.html')
 
     def test_recipe_home_template_shows_no_recipes_found_if_no_recipes(self):
+
         response = self.client.get(reverse('recipes:home'))
         self.assertIn('No Recipes found here 😓', response.content.decode(
                                                                     'utf-8'))
-        
+
     def test_recipe_home_template_loads_recipes(self):
         '''Para este teste é necessário criar receitas para o teste
            use o shift+end para selecionar até no fim da linha '''
 
-        category = Category.objects.create(name='Category')
-
-        author = User.objects.create_user(
-            first_name='user',
-            last_name='name',
-            username='username',
-            password='123456',
-            email='username@email.com')
-
-        recipe = Recipe.objects.create( # noqa: F841,E261
-            category=category,
-            author=author,
-            title='Recipe Title',
-            description='Recipe Description',
-            slug='recipe-slug',
-            preparation_time=10,
-            preparation_time_unit='Minutos',
-            servings=5,
-            servings_unit='Porções',
-            preparation_steps='Recipe Preparation Steps',
-            preparation_steps_is_html=False,
-            is_published=True)
-
         response = self.client.get(reverse('recipes:home'))
         response_recipes = response.context['recipes']
-
         content = response.content.decode('utf-8')
-
         self.assertEqual(len(response_recipes), 1)
         self.assertEqual(response_recipes.first().title, 'Recipe Title')
         self.assertIn('Recipe Title', content)
