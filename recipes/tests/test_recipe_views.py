@@ -10,6 +10,7 @@ from .test_recipe_base import RecipeTestBase
 # ptw para ficar gerando o teste de forma automática
 # https://pt.linkedin.com/pulse/todos-os-atalhos-do-vs-code-mateus-barbosa
 
+
 # @skip('WIP')
 class RecipeViewsTest(RecipeTestBase):
 
