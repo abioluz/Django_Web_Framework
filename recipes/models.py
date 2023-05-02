@@ -10,10 +10,6 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
-    def delete(self, *args, **kwargs):
-        Recipe.objects.filter(category=self.id).update(is_published=False)
-        super().delete(*args, **kwargs)
-
 
 class Recipe(models.Model):
     title = models.CharField(max_length=65)
@@ -35,11 +31,6 @@ class Recipe(models.Model):
         blank=True, default=None)
     author = models.ForeignKey(
         User, on_delete=models.SET_NULL, null=True)
-
-    def save(self, *args, **kwargs):
-        if self.category is None:
-            self.is_published = False
-        super().save(*args, **kwargs)
 
     def __str__(self) -> str:
         return self.title
