@@ -1,5 +1,6 @@
 from .test_recipe_base import RecipeTestBase
 from django.core.exceptions import ValidationError
+from parameterized import parameterized
 
 
 class RecipeModelTest(RecipeTestBase):
@@ -18,4 +19,17 @@ class RecipeModelTest(RecipeTestBase):
         with self.assertRaises(ValidationError):
             self.recipe.full_clean()  # Aqui a validação ocorre
 
+    @parameterized.expand(
+            [
+                ('title', 65),
+                ('description', 165),
+                ('preparation_time_unit', 65),
+                ('servings_unit', 65),
+            ]
+    )
+    def test_recipe_max_length(self, field, max_lenght):
+        '''pip install parameterized'''
 
+        setattr(self.recipe, field, 'a'*(max_lenght+1))
+        with self.assertRaises(ValidationError):
+            self.recipe.full_clean()  # Aqui a validação ocorre
